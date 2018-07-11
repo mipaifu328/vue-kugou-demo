@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <HeadLogo @click.native="onTapLogo" />
+    <HeadLogo/>
     <RankHead v-if="head.toggle" :title="head.title" :cStyle="head.style" />
     <HeadNav v-else />
   </div>
@@ -15,11 +15,6 @@
     computed: {
       ...mapGetters(['head'])
     },
-    components: {HeadLogo, HeadNav, RankHead},
-    methods: {
-      onTapLogo: function(){
-        console.log('tap logo');
-      }
-    }
+    components: {HeadLogo, HeadNav, RankHead}
   }
 </script>
