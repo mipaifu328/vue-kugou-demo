@@ -41,6 +41,18 @@
     created(){
     	this.getList()
     },
+    //通过路由的before钩子解除router-view缓存限制
+		beforeRouteEnter (to, from, next) {
+			next(vm => {
+				vm.$store.commit('showHead', true)
+        vm.$store.commit('setHeadTitle', '搜索')
+        vm.$store.commit('setHeadStyle', {background: `rgb(44, 162, 249)`})
+			});
+		},
+		beforeRouteLeave(to, from, next){
+			this.$store.commit('showHead', false)
+			next()
+		},
     methods: {
       getList(){
         Indicator.open({
@@ -54,7 +66,7 @@
       },
       replaceInput(index){
         this.keyword = this.hotList[index]
-        this.Search()
+        this.search()
       },
       search(){
         this.togglePanel = false
