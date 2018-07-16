@@ -16,90 +16,129 @@
 </template>
 
 <script>
-	import { Indicator } from 'mint-ui'
-	import { PLAY_AUDIO } from '../mixins'
-	export default {
-		mixins: [PLAY_AUDIO],
-		data(){
-			return {
-				imgurl: '',
-				songList: [],
-				updateTime: '',
-				opacity: 0
-			}
-		},
-		//通过路由的before钩子解除router-view缓存限制
-		beforeRouteEnter (to, from, next) {
-			next(vm => {
-				vm.$store.commit('showHead', true)
-				vm.getList()
-				window.onscroll = () => {
-					vm.opacity = window.pageYOffset / 250
-					vm.$store.commit('setHeadStyle', {background: `rgba(43,162,251,${vm.opacity})`})
-				}
-			})
-		},
-		beforeRouteLeave(to, from, next){
-			this.$store.commit('showHead', false)
-			window.onscroll = null
-			next()
-		},
-		mounted(){
-			window.onscroll = () => {
-				this.opacity = window.pageYOffset / 200
-				this.$store.commit('setHeadStyle', {background: `rgba(43,162,251,${this.opacity})`})
-			}
-		},
-		methods: {
-			getToday(){
-				const time = new Date()
-				const year = time.getFullYear()
-				let month = time.getMonth() + 1
-				let date = time.getDate()
-				if(month < 10) month = '0' + month
-				if(date < 10) date = '0' + date
-				return `${year}-${month}-${date}`
-			},
-			getList(){
-				Indicator.open({
-					text: '加载中...',
-					spinnerType: 'snake'
-				})
-				var infoID = this.$route.params.id;
-				this.$http.get(`/proxy/rank/info/?rankid=${infoID}&page=1&json=true`).then(({data}) => {
-					Indicator.close()
-					const {info, songs} = data
-					const {banner7url, rankname} = info
-					const {list} = songs
-					this.imgurl = banner7url.replace('{size}', '400')
-					this.songList = list
-					this.$store.commit('setHeadTitle', rankname)
-				})
-			}
-		}
-	}
+import { Indicator } from "mint-ui";
+import { PLAY_AUDIO } from "../mixins";
+export default {
+  mixins: [PLAY_AUDIO],
+  data() {
+    return {
+      imgurl: "",
+      songList: [],
+      updateTime: "",
+      opacity: 0
+    };
+  },
+  //通过路由的before钩子解除router-view缓存限制
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.$store.commit("showHead", true);
+      vm.getList();
+      window.onscroll = () => {
+        vm.opacity = window.pageYOffset / 250;
+        vm.$store.commit("setHeadStyle", {
+          background: `rgba(43,162,251,${vm.opacity})`
+        });
+      };
+    });
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit("showHead", false);
+    window.onscroll = null;
+    next();
+  },
+  mounted() {
+    window.onscroll = () => {
+      this.opacity = window.pageYOffset / 200;
+      this.$store.commit("setHeadStyle", {
+        background: `rgba(43,162,251,${this.opacity})`
+      });
+    };
+  },
+  methods: {
+    getToday() {
+      const time = new Date();
+      const year = time.getFullYear();
+      let month = time.getMonth() + 1;
+      let date = time.getDate();
+      if (month < 10) month = "0" + month;
+      if (date < 10) date = "0" + date;
+      return `${year}-${month}-${date}`;
+    },
+    getList() {
+      Indicator.open({
+        text: "加载中...",
+        spinnerType: "snake"
+      });
+      var infoID = this.$route.params.id;
+      this.$http
+        .get(`/proxy/rank/info/?rankid=${infoID}&page=1&json=true`)
+        .then(({ data }) => {
+          Indicator.close();
+          const { info, songs } = data;
+          const { banner7url, rankname } = info;
+          const { list } = songs;
+          this.imgurl = banner7url.replace("{size}", "400");
+          this.songList = list;
+          this.$store.commit("setHeadTitle", rankname);
+        });
+    }
+  }
+};
 </script>
 
 <style>
-	.rank-list-good {
-		display: inline-block;
-		padding: 2px 8px;
-		left: 12px !important;
-		border-radius: 8px;
-		color: #fff;
-		margin-top: 3px !important;
-	}
-	
-	.rank-list-first {
-		background-color: #E80000;
-	}
-	
-	.rank-list-second {
-		background-color: #FF7200;
-	}
-	
-	.rank-list-third {
-		background-color: #F8B300;
-	}
+.rank-banner-wrap {
+  width: 100%;
+  height: 200px;
+  margin-top: -43px;
+  position: relative;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+.rank-status {
+  height: 43px;
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: -webkit-linear-gradient(
+    bottom,
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0)
+  );
+  line-height: 43px;
+  font-size: 15px;
+  color: #fff;
+}
+.rank-info-list .rank-index {
+  position: absolute;
+  left: 20px;
+  font-size: 12px;
+  margin-top: 4px;
+}
+.rank-info-list .mint-cell-title {
+  padding-left: 35px;
+}
+.rank-list-good {
+  display: inline-block;
+  padding: 2px 8px;
+  left: 12px !important;
+  border-radius: 8px;
+  color: #fff;
+  margin-top: 3px !important;
+}
+
+.rank-list-first {
+  background-color: #e80000;
+}
+
+.rank-list-second {
+  background-color: #ff7200;
+}
+
+.rank-list-third {
+  background-color: #f8b300;
+}
 </style>
 

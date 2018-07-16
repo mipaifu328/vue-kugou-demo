@@ -39,6 +39,7 @@
 		
 		.mint-cell-wrapper{
 			font-size: 16px;
+			padding: 10px 5px;
 		}
 	}
 </style>

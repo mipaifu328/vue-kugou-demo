@@ -10,47 +10,55 @@
 </template>
 
 <script type="es6">
-  export default {
-    name: 'head-nav',
-    computed: {
-    	headNav: {
-    		get(){
-    			return this.$store.getters.headNav
-		    },
-		    set(nav) {
-    			const index = nav.substr(-1)
-					this.$store.commit('setHeadNav', nav)
-			    this.goRouter(Number(index))
-		    }
-	    }
-    },
-    methods: {
-      goRouter(index){
-        switch (index) {
-          case 1:
-            this.$router.push({path: '/'});
-            break;
-          case 2:
-            this.$router.push({path: '/rank'});
-            break;
-          case 3:
-            this.$router.push({path: '/plist'});
-            break;
-          case 4:
-            this.$router.push({path: '/singer'});
-            break;
-        }
+export default {
+  name: "head-nav",
+  computed: {
+    headNav: {
+      get() {
+        return this.$store.getters.headNav;
+      },
+      set(nav) {
+        const index = nav.substr(-1);
+        this.$store.commit("setHeadNav", nav);
+        this.goRouter(Number(index));
+      }
+    }
+  },
+  methods: {
+    goRouter(index) {
+      switch (index) {
+        case 1:
+          this.$router.push({ path: "/" });
+          break;
+        case 2:
+          this.$router.push({ path: "/rank" });
+          break;
+        case 3:
+          this.$router.push({ path: "/plist" });
+          break;
+        case 4:
+          this.$router.push({ path: "/singer" });
+          break;
       }
     }
   }
+};
 </script>
 
 <style>
-  .mint-tab-item {
-    padding: 12px 0 !important;
-  }
+.header-nav {
+  position: fixed;
+  top: 51px;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  border-bottom: 1px solid #e4e4e4;
+}
+.mint-tab-item {
+  padding: 12px 0 !important;
+}
 
-  .mint-tab-item-label {
-    font-size: 16px !important;
-  }
+.mint-tab-item-label {
+  font-size: 16px !important;
+}
 </style>

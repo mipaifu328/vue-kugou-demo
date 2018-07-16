@@ -18,62 +18,98 @@
   </div>
 </template>
 <script type="es6">
-  import { Indicator } from 'mint-ui'
-  import { PLAY_AUDIO } from '../mixins'
-  export default {
-    mixins: [PLAY_AUDIO],
-    data(){
-      return {
-        imgurl: '',
-        songList: [],
-        updateTime: '',
-        desc: '',
-        hideDesc: true,
-        opacity: 0
-      }
-    },
-    //通过路由的before钩子解除router-view缓存限制
-    beforeRouteEnter (to, from, next) {
-      next(vm => {
-        vm.$store.commit('showHead', true)
-        vm.get()
-        window.onscroll = ()=> {
-          vm.opacity = window.pageYOffset / 250
-          vm.$store.commit('setHeadStyle', {background: `rgba(43,162,251,${vm.opacity})`})
-        }
-      })
-    },
-    beforeRouteLeave(to, from, next){
-      this.$store.commit('showHead', false)
-      window.onscroll = null
-      next()
-    },
-    methods: {
-      get(){
-        Indicator.open({
-          text: '加载中...',
-          spinnerType: 'snake'
+import { Indicator } from "mint-ui";
+import { PLAY_AUDIO } from "../mixins";
+export default {
+  mixins: [PLAY_AUDIO],
+  data() {
+    return {
+      imgurl: "",
+      songList: [],
+      updateTime: "",
+      desc: "",
+      hideDesc: true,
+      opacity: 0
+    };
+  },
+  //通过路由的before钩子解除router-view缓存限制
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.$store.commit("showHead", true);
+      vm.get();
+      window.onscroll = () => {
+        vm.opacity = window.pageYOffset / 250;
+        vm.$store.commit("setHeadStyle", {
+          background: `rgba(43,162,251,${vm.opacity})`
         });
-        var infoID = this.$route.params.id;
-        this.$http.get(`/proxy/singer/info/${infoID}&json=true`).then(({data})=> {
-          Indicator.close()
-					console.log(data)
-	        const info = data.info
-	        const songList = data.songs.list
-	        this.imgurl = info.imgurl.replace('{size}', '400')
-	        this.desc = info.intro
-	        this.songList = songList
-	        this.$store.commit('setHeadTitle', info.singername)
-				});
-      },
-      toggleDesc(){
-        this.hideDesc = !this.hideDesc
-      }
+      };
+    });
+  },
+  beforeRouteLeave(to, from, next) {
+    this.$store.commit("showHead", false);
+    window.onscroll = null;
+    next();
+  },
+  methods: {
+    get() {
+      Indicator.open({
+        text: "加载中...",
+        spinnerType: "snake"
+      });
+      var infoID = this.$route.params.id;
+      this.$http
+        .get(`/proxy/singer/info/${infoID}&json=true`)
+        .then(({ data }) => {
+          Indicator.close();
+          console.log(data);
+          const info = data.info;
+          const songList = data.songs.list;
+          this.imgurl = info.imgurl.replace("{size}", "400");
+          this.desc = info.intro;
+          this.songList = songList;
+          this.$store.commit("setHeadTitle", info.singername);
+        });
+    },
+    toggleDesc() {
+      this.hideDesc = !this.hideDesc;
     }
   }
+};
 </script>
-<style scoped>
-  .rank-banner-wrap {
-    height: 250px;
-  }
+<style>
+.rank-banner-wrap {
+  width: 100%;
+  height: 250px;
+  margin-top: -43px;
+  position: relative;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+.plist-info .mint-cell-title {
+  padding-left: 5px;
+}
+.plist-desp {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  position: relative;
+  text-align: justify;
+}
+.plist-desp-p {
+  padding-right: 40px;
+  line-height: 135%;
+}
+.plist-desp-icon {
+  display: block;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.plist-desp-hide {
+  overflow: hidden;
+  height: 1.35em;
+}
 </style>

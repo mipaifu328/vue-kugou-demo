@@ -21,11 +21,42 @@
 	</div>
 </template>
 <script>
-	export default {
-		methods: {
-			goRouter(id){
-				this.$router.push({path: `/singer/list/${id}`})
-			}
-		}
-	}
+export default {
+  methods: {
+    goRouter(id) {
+      this.$router.push({ path: `/singer/list/${id}` });
+    }
+  }
+};
 </script>
+
+<style scoped>
+.cell-group {
+  margin: 15px 0;
+  width: 100%;
+  border: 1px solid #e4e4e4;
+  border-radius: 5px;
+  background-color: #fbfbfb;
+}
+.cell-item {
+  padding: 12px 15px;
+  font-size: 15px;
+  border-bottom: 1px solid #e4e4e4;
+  position: relative;
+}
+.cell-item:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 12px;
+  height: 100%;
+  background: url("../assets/images/arrow_icon.png") no-repeat center;
+  background-size: 12px;
+  top: 0;
+  right: 15px;
+}
+.cell-item:last-of-type {
+  border: none;
+}
+</style>
+
